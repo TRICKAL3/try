@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to 0.3TRADE</title>
+    <style>
+        /* Your styles for the welcome page */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #222;
+            color: #fff;
+        }
+
+        header {
+            background-color: #111;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .about-button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .about-button:hover {
+            background-color: #45a049;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .user-details {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .wallet-balance {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .wallet-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .wallet-buttons button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .wallet-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        .crypto-wallets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .crypto-wallet {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1 1 calc(33.333% - 20px);
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .crypto-wallet:hover {
+            transform: scale(1.05);
+        }
+
+        .crypto-wallet h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .crypto-balance {
+            font-size: 16px;
+            color: #bbb;
+        }
+
+        .get-started-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            padding: 15px 25px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        .get-started-button:hover {
+            background-color: #45a049;
+        }
+
+        .get-started-button.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="title">0.3TRADE</div>
+        </div>
+        <a href="#" class="about-button">About</a>
+    </header>
+    <main>
+        <div class="user-details">
+            <p>Welcome, <span id="user-name"></span>!</p>
+        </div>
+        <div id="main-wallet-balance" class="wallet-balance">
+            <!-- Wallet balance will be dynamically updated here -->
+        </div>
+        <div class="wallet-buttons">
+            <button class="redirect-button" onclick="redirectTo('deposit_page.html')">Deposit</button>
+            <button class="redirect-button" onclick="redirectTo('withdraw_page.html')">Withdraw</button>
+            <button class="redirect-button" onclick="redirectTo('send_page.html')">Send</button>
+        </div>
+        <div class="crypto-wallets">
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('Bitcoin')">
+                <h3>Bitcoin (BTC)</h3>
+                <p class="crypto-balance">Balance: 0.5 BTC</p>
+            </div>
+    
+            <!-- Ethereum (ETH) Crypto Wallet -->
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('Ethereum')">
+                <h3>Ethereum (ETH)</h3>
+                <p class="crypto-balance">Balance: 2 ETH</p>
+            </div>
+    
+            <!-- Litecoin (LTC) Crypto Wallet -->
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('Litecoin')">
+                <h3>Litecoin (LTC)</h3>
+                <p class="crypto-balance">Balance: 10 LTC</p>
+            </div>
+    
+            <!-- USD Tether (USDT) Crypto Wallet -->
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('USDT')">
+                <h3>USD Tether (USDT)</h3>
+                <p class="crypto-balance">Balance: 500 USDT</p>
+            </div>
+    
+            <!-- Cardano (ADA) Crypto Wallet -->
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('Cardano')">
+                <h3>Cardano (ADA)</h3>
+                <p class="crypto-balance">Balance: 100 ADA</p>
+            </div>
+    
+            <!-- Dogecoin (DOGE) Crypto Wallet -->
+            <div class="crypto-wallet" onclick="redirectToCryptoWalletPage('Dogecoin')">
+                <h3>Dogecoin (DOGE)</h3>
+                <p class="crypto-balance">Balance: 1,000 DOGE</p>
+            </div>
+        </div>
+    </main>
+    <a href="#" class="get-started-button">Get Started</a>
+
+<script>
+    // Show the Get Started button after a delay
+    setTimeout(function () {
+        document.querySelector('.get-started-button').classList.add('show');
+    }, 1000);
+
+    // Retrieve user name from localStorage
+    const storedUserName = localStorage.getItem('userName');
+
+    // Update the user name in the HTML
+    if (storedUserName) {
+        document.getElementById('user-name').textContent = storedUserName;
+    }
+
+    // Function to redirect to a page with query parameters
+    function redirectTo(page) {
+        window.location.href = page;
+    }
+
+    // Function to get query parameters from the URL
+    function getQueryParams() {
+        const queryParams = {};
+        const queryString = window.location.search.substring(1);
+        const pairs = queryString.split("&");
+
+        for (const pair of pairs) {
+            const [key, value] = pair.split("=");
+            queryParams[key] = decodeURIComponent(value);
+        }
+
+        return queryParams;
+    }
+
+    // Function to update wallet balance based on query parameters
+    function updateWalletBalance() {
+        const storedBalance = localStorage.getItem('walletBalance');
+        const currentBalanceElement = document.getElementById('main-wallet-balance');
+
+        if (storedBalance !== null) {
+            currentBalanceElement.textContent = `Main Wallet Balance: ${storedBalance} MWK`;
+        }
+    }
+
+    // Call the function to update wallet balance on page load
+    updateWalletBalance();
+
+    const queryParams = getQueryParams();
+
+    if (queryParams.amount) {
+        const depositedAmount = parseFloat(queryParams.amount);
+        const currentBalanceElement = document.getElementById('main-wallet-balance');
+        const currentBalance = parseFloat(currentBalanceElement.textContent.replace(/[^0-9.]/g, ''));
+
+        // Update the wallet balance
+        const newBalance = currentBalance + depositedAmount;
+        currentBalanceElement.textContent = `Main Wallet Balance: ${newBalance.toFixed(1)} MWK`;
+
+        // Update the main wallet balance in localStorage
+        localStorage.setItem('walletBalance', newBalance.toFixed(1));
+    }
+            // Function to redirect to a crypto wallet page
+            function redirectToCryptoWalletPage(wallet) {
+            const walletPage = wallet.toLowerCase() + '_page.html';
+            window.location.href = walletPage;
+        }
+</script>
+
+</body>
+</html>
